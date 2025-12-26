@@ -1,4 +1,3 @@
-/* RESET Y CONFIGURACIONES GLOBALES */
 * {
     margin: 0;
     padding: 0;
@@ -6,29 +5,20 @@
     font-family: 'Dancing Script', 'Segoe UI', cursive;
 }
 
-html {
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-}
-
 body {
     background: linear-gradient(135deg, #f5f0ff 0%, #e6e1ff 100%);
     color: #4a3c6d;
     min-height: 100vh;
     overflow-x: hidden;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .container {
-    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 20px;
 }
 
-/* PANTALLA DE ACCESO - RESPONSIVE */
+/* Pantalla de acceso con llave y candado */
 #lock-screen {
     position: fixed;
     top: 0;
@@ -42,7 +32,6 @@ body {
     flex-direction: column;
     z-index: 1000;
     transition: all 0.8s ease;
-    padding: 20px;
 }
 
 #lock-screen.hidden {
@@ -53,66 +42,63 @@ body {
 
 .lock-screen-content {
     text-align: center;
+    position: relative;
     width: 100%;
-    max-width: 800px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
 }
 
 .lock-title {
-    font-size: clamp(2rem, 8vw, 4rem);
+    font-size: 4rem;
     color: #7b5dd6;
     margin-bottom: 10px;
     text-shadow: 2px 2px 8px rgba(123, 93, 214, 0.2);
-    line-height: 1.2;
 }
 
 .lock-subtitle {
-    font-size: clamp(1rem, 4vw, 1.8rem);
+    font-size: 1.8rem;
     color: #8a75c9;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     max-width: 700px;
-    line-height: 1.4;
 }
 
 .lock-game-area {
     position: relative;
-    width: 100%;
-    max-width: 500px;
-    height: clamp(250px, 50vh, 350px);
+    width: 500px;
+    height: 350px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(123, 93, 214, 0.2);
-    margin: 20px auto;
+    margin: 30px auto;
     border: 3px dashed #b19cff;
     overflow: hidden;
 }
 
 .lock-instruction {
     position: absolute;
-    top: 15px;
+    top: 20px;
     left: 0;
     width: 100%;
     text-align: center;
-    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-size: 1.5rem;
     color: #7b5dd6;
     z-index: 5;
-    padding: 0 10px;
 }
 
 .lock-container {
     position: absolute;
     top: 50%;
-    left: 75%;
+    left: 80%;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
 
 .lock {
-    font-size: clamp(3rem, 10vw, 7rem);
+    font-size: 7rem;
     color: #7b5dd6;
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
     transition: all 0.5s ease;
@@ -131,36 +117,32 @@ body {
 .key-start-area {
     position: absolute;
     top: 50%;
-    left: 25%;
+    left: 20%;
     transform: translate(-50%, -50%);
     background: rgba(181, 166, 255, 0.3);
     border-radius: 15px;
-    padding: 15px;
+    padding: 20px;
     border: 2px dashed #7b5dd6;
     z-index: 2;
-    max-width: 120px;
 }
 
 .key-start-text {
     color: #7b5dd6;
-    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
 }
 
 .key {
     position: absolute;
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: 5rem;
     color: #ffd166;
     cursor: grab;
     z-index: 10;
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.3));
     transition: transform 0.2s ease;
-    left: 25%;
+    left: 20%;
     top: 50%;
     transform: translate(-50%, -50%);
-    touch-action: none;
-    -webkit-user-select: none;
-    user-select: none;
 }
 
 .key:active {
@@ -179,13 +161,13 @@ body {
 
 .password-form {
     background-color: rgba(255, 255, 255, 0.95);
-    padding: 25px;
+    padding: 30px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(123, 93, 214, 0.3);
     text-align: center;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
-    margin-top: 20px;
+    margin-top: 30px;
     display: none;
     border: 2px solid #b19cff;
     animation: slideUp 0.5s ease;
@@ -199,7 +181,7 @@ body {
 .password-form h3 {
     color: #7b5dd6;
     margin-bottom: 20px;
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-size: 2rem;
 }
 
 .password-input {
@@ -208,10 +190,10 @@ body {
 
 .password-input input {
     width: 100%;
-    padding: 15px;
+    padding: 15px 20px;
     border: 2px solid #d4c2ff;
     border-radius: 12px;
-    font-size: clamp(1rem, 3vw, 1.3rem);
+    font-size: 1.3rem;
     text-align: center;
     outline: none;
     font-family: 'Dancing Script', cursive;
@@ -229,9 +211,9 @@ body {
     background: linear-gradient(to right, #7b5dd6, #9d8aff);
     color: white;
     border: none;
-    padding: 15px 25px;
+    padding: 15px 30px;
     border-radius: 12px;
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
     font-family: 'Dancing Script', cursive;
@@ -252,17 +234,16 @@ body {
     margin-top: 15px;
     font-weight: 500;
     display: none;
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-size: 1.2rem;
 }
 
 .hint {
     margin-top: 15px;
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-size: 1.1rem;
     color: #8a75c9;
     font-style: italic;
 }
 
-/* ANIMACIONES */
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -270,19 +251,18 @@ body {
 
 @keyframes float {
     0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-    50% { transform: translate(-50%, -50%) translateY(-10px); }
+    50% { transform: translate(-50%, -50%) translateY(-15px); }
 }
 
 .key {
     animation: float 3s ease-in-out infinite;
 }
 
-/* ESTILOS PARA EL ÁLBUM */
+/* Estilos para el álbum */
 #album-container {
     display: none;
     opacity: 0;
     transition: opacity 1s ease;
-    width: 100%;
 }
 
 #album-container.visible {
@@ -292,7 +272,6 @@ body {
 
 .album-wrapper {
     position: relative;
-    width: 100%;
     max-width: 1000px;
     margin: 0 auto;
     background: white;
@@ -300,19 +279,19 @@ body {
     box-shadow: 0 25px 60px rgba(123, 93, 214, 0.25);
     overflow: hidden;
     border: 5px solid #d4c2ff;
-    min-height: 100vh;
+    min-height: 800px;
 }
 
-/* CANDADO PARA SALIR */
+/* Candado para salir */
 .exit-lock-container {
-    position: fixed;
-    top: 15px;
-    right: 15px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,19 +308,24 @@ body {
 }
 
 .exit-lock {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     color: #7b5dd6;
     transition: all 0.3s;
 }
 
+.exit-lock-container:hover .exit-lock {
+    color: #ff6b8b;
+    transform: rotate(15deg);
+}
+
 .exit-tooltip {
     position: absolute;
-    top: 60px;
-    right: 0;
+    top: 70px;
+    right: 10px;
     background: rgba(255, 255, 255, 0.95);
-    padding: 8px 12px;
+    padding: 8px 15px;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     color: #7b5dd6;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid #d4c2ff;
@@ -357,7 +341,7 @@ body {
     transform: translateY(0);
 }
 
-/* PANTALLA DE DESPEDIDA */
+/* Pantalla de cierre con efectos */
 #goodbye-screen {
     position: fixed;
     top: 0;
@@ -372,7 +356,6 @@ body {
     z-index: 2000;
     opacity: 0;
     transition: opacity 1s ease;
-    padding: 20px;
 }
 
 #goodbye-screen.visible {
@@ -380,19 +363,14 @@ body {
     opacity: 1;
 }
 
-.goodbye-content {
-    text-align: center;
-    max-width: 90%;
-}
-
 .goodbye-message {
-    font-size: clamp(2.5rem, 10vw, 6rem);
+    font-size: 6rem;
     color: #ff6b8b;
-    margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 40px;
     text-shadow: 0 0 20px rgba(255, 107, 139, 0.8);
     animation: textPulse 2s infinite;
     font-weight: bold;
-    line-height: 1.2;
 }
 
 @keyframes textPulse {
@@ -401,15 +379,14 @@ body {
 }
 
 .goodbye-subtitle {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: 2.5rem;
     color: #9d8aff;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     text-shadow: 0 0 15px rgba(157, 138, 255, 0.8);
-    line-height: 1.4;
 }
 
-/* FUEGOS ARTIFICIALES Y CONFETI */
+/* Fuegos artificiales y confeti */
 .firework {
     position: absolute;
     width: 5px;
@@ -425,54 +402,50 @@ body {
     pointer-events: none;
 }
 
-/* CONTENIDO DEL ÁLBUM */
+/* Contenido del álbum */
 .album-header {
     text-align: center;
-    padding: clamp(30px, 5vw, 50px) 20px clamp(20px, 3vw, 30px);
+    padding: 50px 20px 30px;
     position: relative;
     background: linear-gradient(135deg, #f5f0ff 0%, #e6d7ff 100%);
     border-bottom: 3px solid #d4c2ff;
 }
 
 .album-title {
-    font-size: clamp(2rem, 8vw, 4.5rem);
+    font-size: 4.5rem;
     color: #7b5dd6;
     margin-bottom: 10px;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    line-height: 1.2;
-    padding: 0 10px;
 }
 
 .couple-names {
-    font-size: clamp(1.5rem, 5vw, 2.8rem);
+    font-size: 2.8rem;
     color: #9d8aff;
-    margin-bottom: 15px;
-    line-height: 1.3;
+    margin-bottom: 20px;
 }
 
 .album-quote {
-    font-size: clamp(1rem, 3.5vw, 1.8rem);
+    font-size: 1.8rem;
     color: #8a75c9;
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
     font-style: italic;
-    padding: 0 15px;
 }
 
-/* ESTILOS PARA EL CARRUSEL DE PÁGINAS */
+/* Estilos para el carrusel de páginas */
 .album-pages {
     position: relative;
-    padding: clamp(20px, 3vw, 40px) 15px;
-    min-height: 60vh;
+    padding: 40px 20px;
+    min-height: 650px;
     overflow: hidden;
 }
 
 .page {
     display: none;
     animation: fadeIn 0.8s ease;
-    padding: 15px;
+    padding: 20px;
 }
 
 .page.active {
@@ -488,27 +461,20 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
     text-align: center;
 }
 
-.image-container {
-    width: 100%;
-    max-width: 650px;
-    margin: 0 auto 25px;
-    overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 15px 30px rgba(123, 93, 214, 0.2);
-    border: 8px solid #f0ebff;
-}
-
 .page-image {
     width: 100%;
-    height: auto;
-    max-height: 400px;
+    max-width: 650px;
+    height: 380px;
     object-fit: cover;
-    display: block;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 15px 30px rgba(123, 93, 214, 0.2);
+    border: 8px solid #f0ebff;
     transition: transform 0.5s ease;
 }
 
@@ -517,82 +483,72 @@ body {
 }
 
 .page-title {
-    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-size: 3rem;
     color: #7b5dd6;
     margin-bottom: 15px;
     font-weight: 600;
-    line-height: 1.3;
-    padding: 0 10px;
 }
 
 .page-date {
-    font-size: clamp(1rem, 3vw, 1.8rem);
+    font-size: 1.8rem;
     color: #9d8aff;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-style: italic;
     background: rgba(181, 166, 255, 0.2);
-    padding: 8px 15px;
+    padding: 8px 20px;
     border-radius: 50px;
     display: inline-block;
-    max-width: 90%;
 }
 
 .page-message {
-    font-size: clamp(1rem, 3vw, 1.8rem);
+    font-size: 1.8rem;
     color: #5a4a8a;
-    line-height: 1.6;
-    margin-bottom: 25px;
+    line-height: 1.8;
+    margin-bottom: 30px;
     max-width: 750px;
-    padding: 0 15px;
 }
 
 .page-poem {
-    font-size: clamp(1rem, 3vw, 1.7rem);
+    font-size: 1.7rem;
     color: #5a4a8a;
-    line-height: 1.6;
+    line-height: 1.8;
     font-style: italic;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     max-width: 700px;
-    padding: 20px;
+    padding: 25px;
     background: linear-gradient(135deg, #f9f7ff 0%, #f0ebff 100%);
     border-radius: 15px;
     border-left: 5px solid #9d8aff;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    width: 90%;
 }
 
-/* CONTROLES DEL ÁLBUM */
+/* Controles del álbum */
 .album-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 15px;
+    padding: 25px 40px;
     background: linear-gradient(135deg, #f5f0ff 0%, #e6d7ff 100%);
     border-top: 3px solid #d4c2ff;
     position: relative;
     z-index: 2;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .nav-button {
     background: linear-gradient(to right, #7b5dd6, #9d8aff);
     color: white;
     border: none;
-    padding: 12px 20px;
+    padding: 15px 30px;
     border-radius: 12px;
-    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.3s;
     font-family: 'Dancing Script', cursive;
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     box-shadow: 0 5px 15px rgba(123, 93, 214, 0.3);
-    white-space: nowrap;
-    min-width: 120px;
-    justify-content: center;
 }
 
 .nav-button:hover:not(:disabled) {
@@ -606,35 +562,25 @@ body {
     cursor: not-allowed;
 }
 
-.btn-text {
-    display: inline;
-}
-
 .page-indicator {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-size: 1.8rem;
     color: #7b5dd6;
     font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 5px;
-    order: -1;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 10px;
+    gap: 8px;
 }
 
 .page-dots {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin: 15px 0;
-    flex-wrap: wrap;
-    padding: 0 15px;
+    gap: 12px;
+    margin: 25px 0;
 }
 
 .dot {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background-color: #d4c2ff;
     cursor: pointer;
@@ -652,46 +598,37 @@ body {
     transform: scale(1.1);
 }
 
-/* ESTILOS PARA LA PÁGINA DE TEXTO ESPECIAL */
+/* Estilos para la página de texto especial */
 .text-page {
-    padding: 30px 20px;
+    padding: 50px 40px;
     background: linear-gradient(135deg, #f9f7ff 0%, #f0ebff 100%);
     border-radius: 20px;
     margin: 20px auto;
     max-width: 800px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
     border: 2px solid #e6d7ff;
-    width: 95%;
 }
 
 .text-page h2 {
     color: #7b5dd6;
     text-align: center;
-    margin-bottom: 25px;
-    font-size: clamp(1.8rem, 5vw, 3rem);
+    margin-bottom: 40px;
+    font-size: 3rem;
 }
 
 .text-page p {
-    font-size: clamp(1rem, 3vw, 1.9rem);
-    line-height: 1.6;
+    font-size: 1.9rem;
+    line-height: 1.9;
     color: #5a4a8a;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: left;
-}
-
-.final-message {
-    text-align: center;
-    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
-    margin-top: 30px;
-    color: #7b5dd6;
-    font-weight: bold;
 }
 
 .album-footer {
     text-align: center;
-    padding: 20px 15px;
+    padding: 30px 20px;
     color: #8a75c9;
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: 1.5rem;
     font-style: italic;
     background: linear-gradient(135deg, #f5f0ff 0%, #e6d7ff 100%);
     border-top: 3px solid #d4c2ff;
@@ -701,7 +638,7 @@ body {
 
 .heart-icon {
     color: #ff6b8b;
-    margin: 0 5px;
+    margin: 0 8px;
     animation: heartbeat 1.5s infinite;
 }
 
@@ -710,95 +647,112 @@ body {
     50% { transform: scale(1.2); }
 }
 
-/* DECORACIONES RESPONSIVAS */
-.decoration {
+/* Decoraciones del álbum */
+.corner-decoration {
     position: absolute;
+    width: 100px;
+    height: 100px;
     z-index: 1;
-    opacity: 0.3;
-    pointer-events: none;
+    opacity: 0.7;
 }
 
-.decoration.heart {
-    color: #ff6b8b;
-    font-size: clamp(1rem, 3vw, 2rem);
+.corner-tl {
+    top: 20px;
+    left: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,20 Q0,20 0,40 L0,80 Q0,100 20,100 L80,100 Q100,100 100,80 L100,20 Q100,0 80,0 L40,0 Q20,0 20,20' fill='%237b5dd6' fill-opacity='0.1'/%3E%3C/svg%3E") no-repeat;
 }
 
-.decoration.star {
-    color: #ffd166;
-    font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+.corner-tr {
+    top: 20px;
+    right: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M80,20 Q100,20 100,40 L100,80 Q100,100 80,100 L20,100 Q0,100 0,80 L0,20 Q0,0 20,0 L60,0 Q80,0 80,20' fill='%237b5dd6' fill-opacity='0.1'/%3E%3C/svg%3E") no-repeat;
 }
 
-/* MEDIA QUERIES ESPECÍFICAS */
-@media (max-width: 768px) {
+.corner-bl {
+    bottom: 20px;
+    left: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20,80 Q0,80 0,60 L0,20 Q0,0 20,0 L80,0 Q100,0 100,20 L100,60 Q100,80 80,80 L40,80 Q20,80 20,80' fill='%237b5dd6' fill-opacity='0.1'/%3E%3C/svg%3E") no-repeat;
+}
+
+.corner-br {
+    bottom: 20px;
+    right: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M80,80 Q100,80 100,60 L100,20 Q100,0 80,0 L20,0 Q0,0 0,20 L0,60 Q0,80 20,80 L60,80 Q80,80 80,80' fill='%237b5dd6' fill-opacity='0.1'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* Flores decorativas */
+.flower {
+    position: absolute;
+    font-size: 2rem;
+    color: #9d8aff;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+.flower-1 { top: 15%; left: 5%; }
+.flower-2 { top: 10%; right: 8%; }
+.flower-3 { bottom: 20%; left: 7%; }
+.flower-4 { bottom: 15%; right: 5%; }
+
+/* Responsive */
+@media (max-width: 900px) {
     .lock-game-area {
-        height: 280px;
+        width: 90%;
+        height: 300px;
     }
     
-    .lock-container {
-        left: 80%;
-    }
-    
-    .key-start-area {
-        left: 20%;
-    }
-    
-    .album-controls {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .page-indicator {
-        order: 0;
-        width: auto;
-        margin-bottom: 0;
-    }
-    
-    .nav-button {
-        width: 100%;
-        max-width: 200px;
-    }
-    
-    .btn-text {
-        display: inline;
-    }
-    
-    .page-poem, .page-message {
-        width: 95%;
-    }
-    
-    .image-container {
-        border-width: 5px;
-    }
-}
-
-@media (max-width: 480px) {
-    .lock-game-area {
-        height: 220px;
-    }
-    
-    .lock {
-        font-size: 4rem;
-    }
-    
-    .key {
+    .lock-title {
         font-size: 3rem;
     }
     
-    .lock-container {
-        left: 85%;
-    }
-    
-    .key-start-area {
-        left: 15%;
-        padding: 10px;
-    }
-    
-    .password-form {
-        padding: 20px;
+    .lock-subtitle {
+        font-size: 1.5rem;
     }
     
     .album-title {
+        font-size: 3.5rem;
+    }
+    
+    .couple-names {
+        font-size: 2.2rem;
+    }
+    
+    .page-title {
         font-size: 2.5rem;
+    }
+    
+    .goodbye-message {
+        font-size: 4rem;
+    }
+    
+    .goodbye-subtitle {
+        font-size: 1.8rem;
+    }
+    
+    .page-message, .page-poem {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .lock-game-area {
+        height: 250px;
+    }
+    
+    .lock {
+        font-size: 5rem;
+    }
+    
+    .key {
+        font-size: 4rem;
+    }
+    
+    .lock-title {
+        font-size: 2.5rem;
+    }
+    
+    .album-title {
+        font-size: 2.8rem;
     }
     
     .couple-names {
@@ -806,27 +760,17 @@ body {
     }
     
     .page-image {
-        max-height: 250px;
+        height: 250px;
     }
     
-    .nav-button {
-        min-width: 100px;
-        padding: 10px 15px;
+    .album-controls {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
     }
     
-    .btn-text {
-        display: none;
-    }
-    
-    .exit-lock-container {
-        width: 45px;
-        height: 45px;
-        top: 10px;
-        right: 10px;
-    }
-    
-    .exit-lock {
-        font-size: 1.5rem;
+    .page-dots {
+        margin: 15px 0;
     }
     
     .goodbye-message {
@@ -834,101 +778,17 @@ body {
     }
     
     .goodbye-subtitle {
-        font-size: 1.8rem;
-    }
-}
-
-/* ORIENTACIÓN HORIZONTAL EN MÓVILES */
-@media (max-height: 500px) and (orientation: landscape) {
-    .lock-screen-content {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+        font-size: 1.5rem;
     }
     
-    .lock-title, .lock-subtitle {
-        width: 100%;
-        text-align: center;
+    .exit-lock-container {
+        width: 50px;
+        height: 50px;
+        top: 15px;
+        right: 15px;
     }
     
-    .lock-game-area {
-        height: 70vh;
-        max-height: 300px;
-        width: 60%;
+    .exit-lock {
+        font-size: 2rem;
     }
-    
-    .password-form {
-        width: 35%;
-        margin-top: 0;
-    }
-    
-    .album-header {
-        padding: 20px 15px;
-    }
-    
-    .album-pages {
-        min-height: 40vh;
-        padding: 15px;
-    }
-    
-    .page-image {
-        max-height: 200px;
-    }
-}
-
-/* DISPOSITIVOS TÁCTILES */
-@media (hover: none) and (pointer: coarse) {
-    .nav-button:hover {
-        transform: none;
-    }
-    
-    .exit-lock-container:hover {
-        transform: none;
-    }
-    
-    .page-image:hover {
-        transform: none;
-    }
-    
-    .nav-button:active, .exit-lock-container:active {
-        transform: scale(0.95);
-    }
-    
-    .password-button:active {
-        transform: scale(0.98);
-    }
-}
-
-/* DISPOSITIVOS CON PANTALLA GRANDE */
-@media (min-width: 1400px) {
-    .container {
-        max-width: 1300px;
-    }
-    
-    .album-wrapper {
-        max-width: 1100px;
-    }
-}
-
-/* SOPORTE PARA MODOS DE ALTO CONTRASTE */
-@media (prefers-contrast: high) {
-    .lock.locked {
-        color: #7b5dd6;
-    }
-    
-    .key {
-        color: #ffb347;
-    }
-    
-    .page-image {
-        border-color: #7b5dd6;
-    }
-}
-
-/* ANIMACIÓN DE SHAKE PARA ERROR */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
