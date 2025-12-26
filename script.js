@@ -25,20 +25,40 @@ let currentPage = 0;
 const totalPages = pages.length;
 let isDragging = false;
 let keyPosition = { x: 0, y: 0 };
-const lockPosition = { x: 400, y: 175 };
-const startPosition = { x: 100, y: 175 };
+let lockPosition = { x: 0, y: 0 };
+let startPosition = { x: 0, y: 0 };
 let trailPoints = [];
 let fireworksInterval;
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', function() {
-    // Configurar posición inicial de la llave
+// Dimensiones responsivas del área de juego
+function calculateGameDimensions() {
+    const gameArea = document.querySelector('.lock-game-area');
+    const rect = gameArea.getBoundingClientRect();
+    
+    // Posiciones relativas al área de juego
+    lockPosition = {
+        x: rect.width * 0.75,
+        y: rect.height * 0.5
+    };
+    
+    startPosition = {
+        x: rect.width * 0.25,
+        y: rect.height * 0.5
+    };
+    
+    // Posicionar la llave
     keyPosition = { ...startPosition };
     draggableKey.style.left = startPosition.x + 'px';
     draggableKey.style.top = startPosition.y + 'px';
-    
+}
+
+// Inicialización
+document.addEventListener('DOMContentLoaded', function() {
     // Configurar número total de páginas
     totalPagesSpan.textContent = totalPages;
+    
+    // Calcular dimensiones iniciales
+    calculateGameDimensions();
     
     // Crear puntos de navegación
     createPageDots();
@@ -62,16 +82,21 @@ document.addEventListener('DOMContentLoaded', function() {
             checkPassword();
         }
     });
+    
+    // Actualizar dimensiones al redimensionar ventana
+    window.addEventListener('resize', calculateGameDimensions);
 });
 
-// Configurar arrastre de la llave
+// Configurar arrastre de la llave para móviles y desktop
 function setupDragAndDrop() {
+    // Eventos para mouse
     draggableKey.addEventListener('mousedown', startDrag);
-    draggableKey.addEventListener('touchstart', startDragTouch);
-    
     document.addEventListener('mousemove', drag);
-    document.addEventListener('touchmove', dragTouch);
     document.addEventListener('mouseup', stopDrag);
+    
+    // Eventos para touch
+    draggableKey.addEventListener('touchstart', startDragTouch, { passive: false });
+    document.addEventListener('touchmove', dragTouch, { passive: false });
     document.addEventListener('touchend', stopDrag);
 }
 
@@ -91,23 +116,7 @@ function drag(e) {
     const x = e.clientX - rect.left - 40;
     const y = e.clientY - rect.top - 40;
     
-    // Limitar la llave al área del juego
-    const boundedX = Math.max(0, Math.min(x, rect.width - 80));
-    const boundedY = Math.max(0, Math.min(y, rect.height - 80));
-    
-    draggableKey.style.left = boundedX + 'px';
-    draggableKey.style.top = boundedY + 'px';
-    
-    // Guardar posición para el rastro
-    keyPosition.x = boundedX;
-    keyPosition.y = boundedY;
-    trailPoints.push({ x: boundedX, y: boundedY });
-    
-    // Actualizar rastro visual
-    updateKeyTrail();
-    
-    // Verificar si la llave está cerca del candado
-    checkKeyInLock(boundedX, boundedY);
+    updateKeyPosition(x, y, rect);
 }
 
 // Funciones para arrastre táctil
@@ -118,7 +127,7 @@ function startDragTouch(e) {
 }
 
 function dragTouch(e) {
-    if (!isDragging) return;
+    if (!isDragging || !e.touches.length) return;
     
     const gameArea = document.querySelector('.lock-game-area');
     const rect = gameArea.getBoundingClientRect();
@@ -126,6 +135,16 @@ function dragTouch(e) {
     const x = touch.clientX - rect.left - 40;
     const y = touch.clientY - rect.top - 40;
     
+    updateKeyPosition(x, y, rect);
+}
+
+function stopDrag() {
+    isDragging = false;
+    draggableKey.style.cursor = 'grab';
+}
+
+// Actualizar posición de la llave
+function updateKeyPosition(x, y, rect) {
     // Limitar la llave al área del juego
     const boundedX = Math.max(0, Math.min(x, rect.width - 80));
     const boundedY = Math.max(0, Math.min(y, rect.height - 80));
@@ -145,18 +164,13 @@ function dragTouch(e) {
     checkKeyInLock(boundedX, boundedY);
 }
 
-function stopDrag() {
-    isDragging = false;
-    draggableKey.style.cursor = 'grab';
-}
-
 // Actualizar el rastro de la llave
 function updateKeyTrail() {
     if (trailPoints.length < 2) return;
     
-    // Mantener solo los últimos 20 puntos para el rastro
-    if (trailPoints.length > 20) {
-        trailPoints = trailPoints.slice(trailPoints.length - 20);
+    // Mantener solo los últimos 15 puntos para el rastro
+    if (trailPoints.length > 15) {
+        trailPoints = trailPoints.slice(trailPoints.length - 15);
     }
     
     // Crear una línea desde el primer punto hasta el último
@@ -185,7 +199,9 @@ function checkKeyInLock(keyX, keyY) {
         Math.pow(keyY - lockPosition.y, 2)
     );
     
-    if (distance < 60) {
+    const threshold = window.innerWidth < 480 ? 80 : 60;
+    
+    if (distance < threshold) {
         // Llave en el candado
         lock.classList.remove('locked');
         lock.classList.add('unlocked');
@@ -213,12 +229,12 @@ function checkKeyInLock(keyX, keyY) {
 function createConfetti() {
     const gameArea = document.querySelector('.lock-game-area');
     
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
         const confetti = document.createElement('div');
         confetti.innerHTML = '<i class="fas fa-heart"></i>';
         confetti.style.position = 'absolute';
         confetti.style.color = ['#ff6b8b', '#7b5dd6', '#9d8aff', '#ffd166'][Math.floor(Math.random() * 4)];
-        confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+        confetti.style.fontSize = Math.random() * 15 + 10 + 'px';
         confetti.style.left = Math.random() * 100 + '%';
         confetti.style.top = '-30px';
         confetti.style.opacity = '0.8';
@@ -231,7 +247,7 @@ function createConfetti() {
             { transform: 'translateY(0) rotate(0deg)', opacity: 0.8 },
             { transform: `translateY(${gameArea.offsetHeight + 30}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
         ], {
-            duration: Math.random() * 2000 + 1000,
+            duration: Math.random() * 1500 + 1000,
             easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
         });
         
@@ -242,9 +258,26 @@ function createConfetti() {
 
 // Reproducir sonido de desbloqueo
 function playUnlockSound() {
-    const unlockSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3');
-    unlockSound.volume = 0.5;
-    unlockSound.play().catch(e => console.log("Audio no permitido"));
+    // Crear audio de desbloqueo simple
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (e) {
+        console.log("Audio no disponible");
+    }
 }
 
 // Función para verificar la contraseña
@@ -259,18 +292,13 @@ function checkPassword() {
         lock.style.transform = 'scale(1.5)';
         lock.style.color = '#5dd67b';
         
-        // Reproducir sonido de éxito
-        const successSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
-        successSound.volume = 0.4;
-        successSound.play().catch(e => console.log("Audio no permitido"));
-        
         // Mostrar el álbum después de un retraso
         setTimeout(() => {
             lockScreen.classList.add('hidden');
             setTimeout(() => {
                 albumContainer.classList.add('visible');
-                // Reproducir música de fondo suave
-                playBackgroundMusic();
+                // Forzar reflow para asegurar animación
+                albumContainer.offsetHeight;
             }, 500);
         }, 1000);
         
@@ -290,11 +318,6 @@ function checkPassword() {
 
 // Función para cerrar el álbum con efectos
 function closeAlbum() {
-    // Reproducir sonido de cierre
-    const closeSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkles-3003.mp3');
-    closeSound.volume = 0.6;
-    closeSound.play().catch(e => console.log("Audio no permitido"));
-    
     // Ocultar el álbum
     albumContainer.classList.remove('visible');
     
@@ -308,26 +331,23 @@ function closeAlbum() {
         // Crear confeti
         createGoodbyeConfetti();
         
-        // Reproducir música especial de despedida
-        playGoodbyeMusic();
-        
-        // Cerrar todo después de 5 segundos
+        // Cerrar todo después de 4 segundos
         setTimeout(() => {
             goodbyeScreen.classList.remove('visible');
             stopFireworks();
             
             // Volver a mostrar la pantalla de acceso después de un momento
             setTimeout(() => {
-                location.reload(); // Recargar la página para reiniciar
+                location.reload();
             }, 1000);
-        }, 5000);
+        }, 4000);
     }, 500);
 }
 
 // Iniciar fuegos artificiales
 function startFireworks() {
-    // Crear fuegos artificiales cada 300ms
-    fireworksInterval = setInterval(createFirework, 300);
+    // Crear fuegos artificiales cada 400ms
+    fireworksInterval = setInterval(createFirework, 400);
 }
 
 // Detener fuegos artificiales
@@ -342,10 +362,10 @@ function createFirework() {
     
     // Posición aleatoria
     const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight / 2;
+    const y = Math.random() * (window.innerHeight / 2);
     
     // Color aleatorio
-    const colors = ['#ff6b8b', '#7b5dd6', '#9d8aff', '#ffd166', '#5dd67b', '#ff9e6d'];
+    const colors = ['#ff6b8b', '#7b5dd6', '#9d8aff', '#ffd166', '#5dd67b'];
     const color = colors[Math.floor(Math.random() * colors.length)];
     
     // Estilo del fuego artificial
@@ -357,15 +377,15 @@ function createFirework() {
     document.body.appendChild(firework);
     
     // Animación del fuego artificial
-    const size = Math.random() * 15 + 5;
-    const explosionSize = Math.random() * 100 + 50;
+    const size = Math.random() * 10 + 5;
+    const explosionSize = Math.random() * 80 + 40;
     
     const animation = firework.animate([
         { width: '5px', height: '5px', opacity: 1, transform: 'translate(0, 0)' },
         { width: `${size}px`, height: `${size}px`, opacity: 0.8, transform: 'translate(0, 0)' },
-        { width: `${explosionSize}px`, height: `${explosionSize}px`, opacity: 0, transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)` }
+        { width: `${explosionSize}px`, height: `${explosionSize}px`, opacity: 0, transform: `translate(${Math.random() * 80 - 40}px, ${Math.random() * 80 - 40}px)` }
     ], {
-        duration: Math.random() * 1000 + 500,
+        duration: Math.random() * 800 + 500,
         easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
     });
     
@@ -375,64 +395,50 @@ function createFirework() {
 
 // Crear confeti para la despedida
 function createGoodbyeConfetti() {
-    for (let i = 0; i < 200; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        
-        // Forma aleatoria
-        const shapes = ['❤️', '💖', '💕', '💗', '💓', '💞', '💝'];
-        const shape = shapes[Math.floor(Math.random() * shapes.length)];
-        confetti.innerHTML = shape;
-        
-        // Posición aleatoria
-        const x = Math.random() * window.innerWidth;
-        
-        // Color aleatorio
-        const colors = ['#ff6b8b', '#7b5dd6', '#9d8aff', '#ffd166', '#5dd67b', '#ff9e6d'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        
-        // Estilo del confeti
-        confetti.style.left = x + 'px';
-        confetti.style.top = '-20px';
-        confetti.style.color = color;
-        confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
-        confetti.style.opacity = '0.9';
-        confetti.style.zIndex = '2001';
-        confetti.style.position = 'fixed';
-        
-        document.body.appendChild(confetti);
-        
-        // Animación del confeti
-        const animation = confetti.animate([
-            { transform: 'translateY(0) rotate(0deg)', opacity: 0.9 },
-            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 720 - 360}deg)`, opacity: 0 }
-        ], {
-            duration: Math.random() * 3000 + 2000,
-            easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)',
-            delay: Math.random() * 500
-        });
-        
-        // Eliminar confeti después de la animación
-        animation.onfinish = () => confetti.remove();
+    const confettiCount = window.innerWidth < 480 ? 100 : 200;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            // Forma aleatoria
+            const shapes = ['❤️', '💖', '💕', '💗'];
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            confetti.innerHTML = shape;
+            
+            // Posición aleatoria
+            const x = Math.random() * window.innerWidth;
+            
+            // Color aleatorio
+            const colors = ['#ff6b8b', '#7b5dd6', '#9d8aff', '#ffd166'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Estilo del confeti
+            confetti.style.left = x + 'px';
+            confetti.style.top = '-20px';
+            confetti.style.color = color;
+            confetti.style.fontSize = Math.random() * 15 + 10 + 'px';
+            confetti.style.opacity = '0.9';
+            confetti.style.zIndex = '2001';
+            confetti.style.position = 'fixed';
+            
+            document.body.appendChild(confetti);
+            
+            // Animación del confeti
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 0.9 },
+                { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 720 - 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2500 + 1500,
+                easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)',
+                delay: Math.random() * 500
+            });
+            
+            // Eliminar confeti después de la animación
+            animation.onfinish = () => confetti.remove();
+        }, i * 20);
     }
-}
-
-// Reproducir música de despedida
-function playGoodbyeMusic() {
-    const goodbyeMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit-we-wish-you-a-merry-christmas-387.mp3');
-    goodbyeMusic.volume = 0.3;
-    goodbyeMusic.play().catch(e => console.log("Audio de despedida no permitido"));
-}
-
-// Reproducir música de fondo
-function playBackgroundMusic() {
-    // Esta función es opcional, puedes descomentarla si quieres música
-    /*
-    const backgroundMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit-loving-you-117.mp3');
-    backgroundMusic.volume = 0.1;
-    backgroundMusic.loop = true;
-    backgroundMusic.play().catch(e => console.log("Reproducción de música automática no permitida"));
-    */
 }
 
 // Crear puntos de navegación
@@ -492,17 +498,6 @@ function updateButtons() {
     nextBtn.disabled = currentPage === totalPages - 1;
 }
 
-// Agregar animación de shake para el error de contraseña
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
-`;
-document.head.appendChild(style);
-
 // Navegación con teclado
 document.addEventListener('keydown', function(event) {
     if (albumContainer.classList.contains('visible')) {
@@ -515,3 +510,89 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+
+// Navegación con gestos táctiles (swipe)
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', function(event) {
+    if (albumContainer.classList.contains('visible')) {
+        touchStartX = event.changedTouches[0].screenX;
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', function(event) {
+    if (albumContainer.classList.contains('visible')) {
+        touchEndX = event.changedTouches[0].screenX;
+        handleSwipe();
+    }
+}, { passive: true });
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Swipe izquierda - ir a siguiente página
+            goToNextPage();
+        } else {
+            // Swipe derecha - ir a página anterior
+            goToPrevPage();
+        }
+    }
+}
+
+// Optimizar imágenes al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.page-image');
+    
+    images.forEach(img => {
+        // Precargar imágenes
+        if (img.complete) {
+            optimizeImage(img);
+        } else {
+            img.addEventListener('load', () => optimizeImage(img));
+        }
+    });
+});
+
+function optimizeImage(img) {
+    // Asegurar que las imágenes se muestren correctamente
+    img.style.opacity = '1';
+}
+
+// Prevenir zoom en input en iOS
+document.addEventListener('touchstart', function(event) {
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+        event.target.style.fontSize = '16px';
+    }
+});
+
+// Ajustar para teclado virtual en móviles
+window.addEventListener('resize', function() {
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+});
+
+// Mejorar rendimiento en dispositivos móviles
+let lastScrollTime = 0;
+window.addEventListener('scroll', function() {
+    const now = Date.now();
+    if (now - lastScrollTime > 100) {
+        lastScrollTime = now;
+        requestAnimationFrame(updateParallax);
+    }
+});
+
+function updateParallax() {
+    // Efectos de paralaje opcionales para mejorar la experiencia
+    const scrollY = window.scrollY;
+    const decorations = document.querySelectorAll('.decoration');
+    
+    decorations.forEach((dec, index) => {
+        const speed = 0.3 + (index * 0.1);
+        dec.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+}
